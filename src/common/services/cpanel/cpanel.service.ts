@@ -15,17 +15,21 @@ export class CpanelService {
 
     async registerLogin(request: IRequestRegisterLogin){
         try {
-            const url = `${this.urlCpanel}/api/login/register`
+            const url = `${this.urlCpanel}api/login/register`
             const response = await firstValueFrom(this.http.post(url, request))
             return response.data
         } catch (error) {
+            console.log(error);
+            
             throw error
         }
     }
 
     async getLogin(email: string){
         try {
-            const url = `${this.urlCpanel}/api/login/`
+            const url = `${this.urlCpanel}api/login/get-login?email=${email}`
+            console.log('url:', url);
+            
             const response = await firstValueFrom(this.http.get(url))
             return response.data
         } catch (error) {

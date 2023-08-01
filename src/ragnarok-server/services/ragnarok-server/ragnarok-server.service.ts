@@ -19,4 +19,8 @@ export class RagnarokServerService {
         newServer.description = description
         return this.ragnarokServerRepository.insert(newServer)
     }
+
+    findServerById(id: number){
+        return this.ragnarokServerRepository.findOneBy({idServer: id})
+    }
 }
