@@ -30,19 +30,6 @@ export class UserService {
 
     }
 
-    async login(request: RequestLoginUserDto){
-        const { email, password } = request
-        try {
-            const user = await this.userRepository.findOne({
-                select: {
-                    email: true,
-                }
-            })
-        } catch (error) {
-            
-        }
-    }
-
     async registerUser(request: RequestRegisterUserDto){
         const { email, genre, password, user } = request
         try {
