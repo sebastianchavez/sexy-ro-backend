@@ -1,5 +1,6 @@
-require('dotenv').config()
 import { TypeOrmModuleOptions } from '@nestjs/typeorm'
+import * as dotenv from 'dotenv'
+dotenv.config()
 const { DB_PORT, DB_USER, DB_PASS, DB_SCHEMA, DB_HOST } = process.env
 
 export const db: TypeOrmModuleOptions = {
@@ -12,5 +13,4 @@ export const db: TypeOrmModuleOptions = {
     entities: [],
     autoLoadEntities: true,
     synchronize: true,
-    logging: true
 } 

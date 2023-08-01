@@ -9,6 +9,12 @@ import { CpanelService } from 'src/common/services/cpanel/cpanel.service';
 import { IRequestRegisterAccount } from 'src/user/interfaces/request-register-account.interface';
 import { IRequestRegisterLogin } from 'src/common/services/cpanel/interfaces/request-register-login.interface';
 import { RagnarokServerService } from 'src/ragnarok-server/services/ragnarok-server/ragnarok-server.service';
+import * as dotenv from 'dotenv'
+import { RequestLoginUserDto } from 'src/user/dtos/request-login-user.dto';
+dotenv.config()
+
+
+const { ID_SERVER } = process.env
 
 @Injectable()
 export class UserService {
@@ -24,31 +30,56 @@ export class UserService {
 
     }
 
+    async login(request: RequestLoginUserDto){
+        const { email, password } = request
+        try {
+            const user = await this.userRepository.findOne({
+                select: {
+                    email: true,
+                }
+            })
+        } catch (error) {
+            
+        }
+    }
+
     async registerUser(request: RequestRegisterUserDto){
         const { email, genre, password, user } = request
-        
-        // TODO: validar email con servidor de RO
-        const login = await this.cpanelService.getLogin(email)
-        if(login){
-            throw new HttpException('Ya existe un jugador con este usuario', HttpStatus.BAD_REQUEST)
-        }
+        try {
+            const login = await this.cpanelService.getLogin(email, user)
 
-        // TODO: Si no existe insertar en tabla usuario
-        const newUser = new User()
-        newUser.email = email;
-        newUser.state = 'enabled';
-        newUser.password = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-        await this.userRepository.insert(newUser)
-
-        // TODO: registrar usuario en RO
-        const requestRegisterAccount: IRequestRegisterLogin = {
-            email,
-            last_ip: '127.0.0.1',
-            sex: genre,
-            user_pass: password,
-            userid: user
+            if(login){
+                throw new HttpException('Ya existe un jugador con este usuario', HttpStatus.BAD_REQUEST)
+            }
+    
+            const newUser = new User()
+            newUser.email = email;
+            newUser.state = 'enabled';
+            newUser.password = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+            console.log('newUser:', newUser);
+            
+            await this.userRepository.insert(newUser)
+    
+            const requestRegisterAccount: IRequestRegisterLogin = {
+                email,
+                last_ip: '127.0.0.1',
+                sex: genre,
+                user_pass: password,
+                userid: user
+            }
+            return this.registerRo(requestRegisterAccount, newUser.idUser)
+        } catch (error) {
+            console.log('ERROR:', error);
+            if(error.code == 'ER_DUP_ENTRY'){
+                throw new HttpException('Ya existe un jugador con este email', HttpStatus.BAD_REQUEST)
+            } else {
+                if(error.response && error.status){
+                    throw new HttpException(error.response, error.status)
+                } else {
+                    throw new HttpException('Problemas de conexión, por favor intente más tarde', HttpStatus.INTERNAL_SERVER_ERROR)
+                }
+            }
         }
-        return this.registerRo(requestRegisterAccount, newUser.idUser)
     }
 
     async registerRo(request: IRequestRegisterAccount, idUser: number){
@@ -58,7 +89,15 @@ export class UserService {
             account.genre = request.sex
             account.ragnarokId = responseCPanel.idUser
             account.idUser = idUser
-            const server = await this.ragnarokServerService.findServerById(1)
+            console.log('account:',account);
+            console.log('ID_SERVER:',ID_SERVER);
+            
+            const server = await this.ragnarokServerService.findServerById(Number(ID_SERVER))
+            console.log('server:',server);
+            
+            if(!server){
+                throw new HttpException('Servidor inválido', HttpStatus.BAD_REQUEST)
+            }
             account.idServer = server.idServer
             return await this.accountRepository.insert(account)
         } catch (error) {
