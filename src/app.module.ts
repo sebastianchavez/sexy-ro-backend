@@ -7,6 +7,7 @@ import { db } from './config/db.config';
 import { RagnarokServerModule } from './ragnarok-server/ragnarok-server.module';
 import { CpanelService } from './common/services/cpanel/cpanel.service';
 import { HttpModule } from '@nestjs/axios'
+import { TokenService } from './common/services/token/token.service';
 
 @Module({
   imports: [
@@ -16,6 +17,6 @@ import { HttpModule } from '@nestjs/axios'
     HttpModule
   ],
   controllers: [AppController],
-  providers: [AppService, CpanelService],
+  providers: [AppService, CpanelService, TokenService],
 })
 export class AppModule {}

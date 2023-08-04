@@ -1,7 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
-import { IRequestRegisterLogin } from './interfaces/request-register-login.interface';
+import { IRequestRegisterLogin } from '../../interfaces/request-register-login.interface';
 
 @Injectable()
 export class CpanelService {

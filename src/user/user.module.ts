@@ -8,6 +8,7 @@ import { CpanelService } from 'src/common/services/cpanel/cpanel.service';
 import { HttpModule } from '@nestjs/axios';
 import { RagnarokServerService } from 'src/ragnarok-server/services/ragnarok-server/ragnarok-server.service';
 import { RagnarokServer } from 'src/ragnarok-server/entities/ragnarokserver.entity';
+import { TokenService } from 'src/common/services/token/token.service';
 
 @Module({
   controllers: [UserController],
@@ -15,6 +16,6 @@ import { RagnarokServer } from 'src/ragnarok-server/entities/ragnarokserver.enti
     TypeOrmModule.forFeature([User, Account, RagnarokServer]),
     HttpModule
   ],
-  providers: [UserService, CpanelService, RagnarokServerService]
+  providers: [UserService, CpanelService, RagnarokServerService, TokenService]
 })
 export class UserModule {}
