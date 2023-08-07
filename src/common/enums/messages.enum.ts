@@ -5,6 +5,7 @@ export enum Message {
     INVALID_USER = 'Usuario inválido',
     DUPLICATE_EMAIL = 'Ya existe un jugador con este email',
     DUPLICATE_EMAIL_USER = 'Ya existe un jugador con este email o usuario',
+    DUPLICATE_USER = 'Ya existe un jugador con este usuario',
     INVALID_SERVER = 'Servidor inválido',
     IS_NOT_EMPTY_DTO = '{{value}} no debe venir vacío',
     IS_STRING_DTO = '{{value}} debe ser un campo tipo texto',

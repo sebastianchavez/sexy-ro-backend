@@ -32,4 +32,14 @@ export class CpanelService {
             throw error
         }
     }
+
+    async getLogins(query) {
+        try {
+            const url = `${this.urlCpanel}api/login/get-logins${query}`
+            const response = await firstValueFrom(this.http.get(url))
+            return response.data
+        } catch (error) {
+            throw error
+        }
+    }
 }

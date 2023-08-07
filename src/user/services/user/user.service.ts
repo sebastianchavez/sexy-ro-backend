@@ -14,6 +14,8 @@ import { RequestLoginUserDto } from 'src/user/dtos/request-login-user.dto';
 import { StateUser } from 'src/common/enums/user.enum';
 import { TokenService } from 'src/common/services/token/token.service';
 import { Message } from 'src/common/enums/messages.enum';
+import { QueryGetAccountsDto } from 'src/user/dtos/query-get-accounts.dto';
+import { RequestRegisterAccountDto } from 'src/user/dtos/request-register-account.dto';
 dotenv.config()
 
 
@@ -77,6 +79,17 @@ export class UserService {
         }
     }
 
+    async getAccounts(req: any, query: QueryGetAccountsDto){
+        try {
+            const { user: { email } } = req
+            const { limit, page } = query
+            const queryParams = `?email=${email}&limit=${limit}&page=${page}`
+            return this.cpanelService.getLogins(queryParams)
+        } catch (error) {
+            throw error
+        }
+    }
+
     async registerUser(request: RequestRegisterUserDto){
         const { email, genre, password, user } = request
         try {
@@ -105,7 +118,9 @@ export class UserService {
             if(error.code == 'ER_DUP_ENTRY'){
                 throw new HttpException(Message.DUPLICATE_EMAIL, HttpStatus.BAD_REQUEST)
             } else {
-                if(error.response && error.status != HttpStatus.INTERNAL_SERVER_ERROR){
+                if(error.response && error.status != HttpStatus.INTERNAL_SERVER_ERROR  && error.response['data']){
+                    throw error.response['data']
+                } else if(error.response && error.status != HttpStatus.INTERNAL_SERVER_ERROR) {
                     throw error
                 } else {
                     throw new HttpException(Message.DEFAULT_EXCEPTION, HttpStatus.INTERNAL_SERVER_ERROR)
@@ -134,4 +149,30 @@ export class UserService {
         }
     }
 
+    async registerAccount(request: RequestRegisterAccountDto, req: any){
+        const { user: { email, isUser } } = req
+        const requestCpanel: IRequestRegisterAccount = {
+            ...request,
+            email
+        }
+        try {
+            const response = await this.registerRo(requestCpanel, isUser)
+            return response
+        } catch (error) {
+            console.log('ERROR:', error.response);
+            
+            if(error.code == 'ER_DUP_ENTRY'){
+                throw new HttpException(Message.DUPLICATE_EMAIL, HttpStatus.BAD_REQUEST)
+            } else {
+                if(error.response && error.status != HttpStatus.INTERNAL_SERVER_ERROR  && error.response['data']){
+                    throw error.response['data']
+                } else if(error.response && error.status != HttpStatus.INTERNAL_SERVER_ERROR) {
+                    throw error
+                } else {
+                    throw new HttpException(Message.DEFAULT_EXCEPTION, HttpStatus.INTERNAL_SERVER_ERROR)
+                }
+            }
+        }
+
+    }
 }
