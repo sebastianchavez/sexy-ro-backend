@@ -11,4 +11,5 @@ export enum Message {
     IS_STRING_DTO = '{{value}} debe ser un campo tipo texto',
     IS_EMAIL_DTO = '{{value}} debe ser un email válido',
     MIN_LENGTH_DTO = '{{value}} debe tener un largo mínimo de {{length}}',
+    IS_NUMBER_DTO = '{{value}} debe ser un campo numérico'
 }

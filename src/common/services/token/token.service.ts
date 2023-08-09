@@ -12,7 +12,7 @@ export class TokenService {
     createToken(user: User) {
         const payload = {
             sub: {
-                isUser: user.idUser,
+                idUser: user.idUser,
                 email: user.email
             },
             iat: moment().unix(),

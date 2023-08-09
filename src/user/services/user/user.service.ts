@@ -16,6 +16,8 @@ import { TokenService } from 'src/common/services/token/token.service';
 import { Message } from 'src/common/enums/messages.enum';
 import { QueryGetAccountsDto } from 'src/user/dtos/query-get-accounts.dto';
 import { RequestRegisterAccountDto } from 'src/user/dtos/request-register-account.dto';
+import { RequestUpdateAccountDto } from 'src/user/dtos/request-update-account.dto';
+import { IRequestUpdateLogin } from 'src/common/interfaces/request-update-login.interface';
 dotenv.config()
 
 
@@ -150,13 +152,13 @@ export class UserService {
     }
 
     async registerAccount(request: RequestRegisterAccountDto, req: any){
-        const { user: { email, isUser } } = req
+        const { user: { email, idUser } } = req
         const requestCpanel: IRequestRegisterAccount = {
             ...request,
             email
         }
         try {
-            const response = await this.registerRo(requestCpanel, isUser)
+            const response = await this.registerRo(requestCpanel, idUser)
             return response
         } catch (error) {
             console.log('ERROR:', error.response);
@@ -173,6 +175,28 @@ export class UserService {
                 }
             }
         }
+    }
 
+    async updateAccount(request: RequestUpdateAccountDto, req: any){
+        const { genre, password, account_id } = request
+        try {
+            await this.accountRepository.update({ idAccount: account_id }, { genre })
+    
+            const requestCpanel: IRequestUpdateLogin = {
+                account_id,
+                user_pass: password,
+                sex: genre
+            }
+            const response = await this.cpanelService.updateLogin(requestCpanel)
+            return response
+        } catch (error) {
+            if(error.response && error.status != HttpStatus.INTERNAL_SERVER_ERROR  && error.response['data']){
+                throw error.response['data']
+            } else if(error.response && error.status != HttpStatus.INTERNAL_SERVER_ERROR) {
+                throw error
+            } else {
+                throw new HttpException(Message.DEFAULT_EXCEPTION, HttpStatus.INTERNAL_SERVER_ERROR)
+            }       
+        }
     }
 }

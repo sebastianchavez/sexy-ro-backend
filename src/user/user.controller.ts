@@ -1,10 +1,11 @@
-import { Controller, Post, Body, Res, HttpStatus, Get, Query, Req } from '@nestjs/common';
+import { Controller, Post, Body, Res, HttpStatus, Get, Query, Req, Put } from '@nestjs/common';
 import { Response } from 'express';
 import { UserService } from './services/user/user.service';
 import { RequestRegisterUserDto } from './dtos/request-register-user.dto';
 import { RequestLoginUserDto } from './dtos/request-login-user.dto';
 import { QueryGetAccountsDto } from './dtos/query-get-accounts.dto';
 import { RequestRegisterAccountDto } from './dtos/request-register-account.dto';
+import { RequestUpdateAccountDto } from './dtos/request-update-account.dto';
 
 @Controller('api/users')
 export class UserController {
@@ -55,4 +56,15 @@ export class UserController {
             throw error
         }
     }
+
+    @Put('update-account')
+    async updateAccount(@Body() body: RequestUpdateAccountDto, @Req() req: any, @Res() res: Response) {
+        try {
+            await this.userService.updateAccount(body, req)
+            res.status(HttpStatus.OK).send({message: 'Usuario actualizado con éxito'})
+        } catch (error) {
+            throw error
+        }
+    }
+
 }

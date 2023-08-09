@@ -2,6 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 import { IRequestRegisterLogin } from '../../interfaces/request-register-login.interface';
+import { IRequestUpdateLogin } from 'src/common/interfaces/request-update-login.interface';
 
 @Injectable()
 export class CpanelService {
@@ -33,7 +34,7 @@ export class CpanelService {
         }
     }
 
-    async getLogins(query) {
+    async getLogins(query: string) {
         try {
             const url = `${this.urlCpanel}api/login/get-logins${query}`
             const response = await firstValueFrom(this.http.get(url))
@@ -41,5 +42,15 @@ export class CpanelService {
         } catch (error) {
             throw error
         }
+    }
+
+    async updateLogin(request: IRequestUpdateLogin){
+         try {
+            const url = `${this.urlCpanel}api/login/update-login`
+            const response = await firstValueFrom(this.http.put(url, request))
+            return response.data
+        } catch (error) {
+            throw error
+         }
     }
 }
