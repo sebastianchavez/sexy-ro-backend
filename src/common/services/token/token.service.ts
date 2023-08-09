@@ -3,6 +3,7 @@ import { User } from 'src/user/entities/user.entity';
 import * as moment from 'moment'
 import * as jwt from 'jwt-simple'
 import * as dotenv from 'dotenv'
+import { Admin } from 'src/admin/entities/admin.entity';
 dotenv.config()
 const { SECRET_TOKEN } = process.env
 
@@ -14,6 +15,19 @@ export class TokenService {
             sub: {
                 idUser: user.idUser,
                 email: user.email
+            },
+            iat: moment().unix(),
+            exp: moment().add(1, 'hour').unix()
+        }
+
+        return jwt.encode(payload, SECRET_TOKEN)
+    }
+
+    createTokenAdmin(admin: Admin){
+        const payload = {
+            sub: {
+                idAdmin: admin.idAdmin,
+                email: admin.email
             },
             iat: moment().unix(),
             exp: moment().add(1, 'hour').unix()

@@ -8,13 +8,15 @@ import { RagnarokServerModule } from './ragnarok-server/ragnarok-server.module';
 import { CpanelService } from './common/services/cpanel/cpanel.service';
 import { HttpModule } from '@nestjs/axios'
 import { TokenService } from './common/services/token/token.service';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
     UserModule,
     TypeOrmModule.forRoot(db),
     RagnarokServerModule,
-    HttpModule
+    HttpModule,
+    AdminModule
   ],
   controllers: [AppController],
   providers: [AppService, CpanelService, TokenService],
