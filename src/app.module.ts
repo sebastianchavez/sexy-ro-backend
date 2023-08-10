@@ -6,7 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { db } from './config/db.config';
 import { RagnarokServerModule } from './ragnarok-server/ragnarok-server.module';
 import { CpanelService } from './common/services/cpanel/cpanel.service';
-import { HttpModule } from '@nestjs/axios'
+import { HttpModule } from '@nestjs/axios';
 import { TokenService } from './common/services/token/token.service';
 import { AdminModule } from './admin/admin.module';
 
@@ -16,7 +16,7 @@ import { AdminModule } from './admin/admin.module';
     TypeOrmModule.forRoot(db),
     RagnarokServerModule,
     HttpModule,
-    AdminModule
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService, CpanelService, TokenService],

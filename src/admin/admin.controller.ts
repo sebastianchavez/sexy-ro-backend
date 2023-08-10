@@ -6,28 +6,25 @@ import { RequestLoginAdminDto } from './dtos/request-login-admin.dto';
 
 @Controller('api/admins')
 export class AdminController {
-    
-    constructor(
-        private adminService: AdminService
-    ){}
+  constructor(private adminService: AdminService) {}
 
-    @Post('register')
-    async register(@Body() body: RequestRegisterAdminDto, @Res() res: Response){
-        try {
-            await this.adminService.register(body)
-            res.status(HttpStatus.OK).send({message: 'Administrador registrado'})
-        } catch (error) {
-            throw error
-        }
+  @Post('register')
+  async register(@Body() body: RequestRegisterAdminDto, @Res() res: Response) {
+    try {
+      await this.adminService.register(body);
+      res.status(HttpStatus.OK).send({ message: 'Administrador registrado' });
+    } catch (error) {
+      throw error;
     }
+  }
 
-    @Post('login')
-    async login(@Body() body: RequestLoginAdminDto, @Res() res: Response){
-        try {
-            const data = await this.adminService.login(body)
-            res.status(HttpStatus.OK).send({message: 'Usuario autenticado', data})
-        } catch (error) {
-            throw error
-        }
+  @Post('login')
+  async login(@Body() body: RequestLoginAdminDto, @Res() res: Response) {
+    try {
+      const data = await this.adminService.login(body);
+      res.status(HttpStatus.OK).send({ message: 'Usuario autenticado', data });
+    } catch (error) {
+      throw error;
     }
+  }
 }

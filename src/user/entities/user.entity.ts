@@ -1,29 +1,35 @@
-import { PrimaryGeneratedColumn, Column, CreateDateColumn, Entity, UpdateDateColumn } from "typeorm";
+import {
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  Entity,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('user')
 export class User {
-    @PrimaryGeneratedColumn('increment')
-    idUser: number;
+  @PrimaryGeneratedColumn('increment')
+  idUser: number;
 
-    @Column({ unique: true })
-    email: string;
-    
-    @Column()
-    password: string;
+  @Column({ unique: true })
+  email: string;
 
-    @Column()
-    state: string; // enabled, disabled
+  @Column()
+  password: string;
 
-    @CreateDateColumn({
-        type: 'timestamp',
-        default: () => 'CURRENT_TIMESTAMP(6)'
-    })
-    createdAt: Date;
+  @Column()
+  state: string; // enabled, disabled
 
-    @UpdateDateColumn({
-        type: 'timestamp',
-        default: () => 'CURRENT_TIMESTAMP(6)',
-        onUpdate: 'CURRENT_TIMESTAMP(6)'
-    })
-    updatedAt: Date;
+  @CreateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+  })
+  createdAt: Date;
+
+  @UpdateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP(6)',
+    onUpdate: 'CURRENT_TIMESTAMP(6)',
+  })
+  updatedAt: Date;
 }

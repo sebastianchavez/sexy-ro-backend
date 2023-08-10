@@ -1,10 +1,10 @@
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common'
-import * as dotenv from 'dotenv'
+import { ValidationPipe } from '@nestjs/common';
+import * as dotenv from 'dotenv';
 import { AppModule } from './app.module';
-dotenv.config()
+dotenv.config();
 
-const { PORT } = process.env
+const { PORT } = process.env;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -13,11 +13,11 @@ async function bootstrap() {
       whitelist: true,
       forbidNonWhitelisted: true,
       transformOptions: {
-        enableImplicitConversion: true
-      }
-    })
-  )
-  app.enableCors()
+        enableImplicitConversion: true,
+      },
+    }),
+  );
+  app.enableCors();
   await app.listen(PORT);
 }
 bootstrap();

@@ -1,4 +1,9 @@
-import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { UserController } from './user.controller';
 import { UserService } from './services/user/user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -15,9 +20,9 @@ import { AuthMiddleware } from 'src/common/middlewares/auth.middleware';
   controllers: [UserController],
   imports: [
     TypeOrmModule.forFeature([User, Account, RagnarokServer]),
-    HttpModule
+    HttpModule,
   ],
-  providers: [UserService, CpanelService, RagnarokServerService, TokenService]
+  providers: [UserService, CpanelService, RagnarokServerService, TokenService],
 })
 export class UserModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
@@ -25,8 +30,8 @@ export class UserModule implements NestModule {
       .apply(AuthMiddleware)
       .exclude(
         { path: 'api/users/register', method: RequestMethod.POST },
-        { path: 'api/users/login', method: RequestMethod.POST }
+        { path: 'api/users/login', method: RequestMethod.POST },
       )
-      .forRoutes('api/users/')
+      .forRoutes('api/users/');
   }
 }

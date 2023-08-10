@@ -1,4 +1,4 @@
 export enum StateUser {
-    ENABLED = 'enabled',
-    DISABLED = 'disabled'
+  ENABLED = 'enabled',
+  DISABLED = 'disabled',
 }

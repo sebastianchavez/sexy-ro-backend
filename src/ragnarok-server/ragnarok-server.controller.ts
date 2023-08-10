@@ -5,27 +5,17 @@ import { RequestSaveServerDto } from './dtos/request-save-server.dto';
 
 @Controller('api/ragnarok-server')
 export class RagnarokServerController {
+  constructor(private ragnarokServerService: RagnarokServerService) {}
 
-    constructor(
-        private ragnarokServerService: RagnarokServerService
-    ){}
-
-    @Post('register')
-    async register(@Body() body: RequestSaveServerDto, @Res() res: Response){
-        try {
-            await this.ragnarokServerService.saveServer(body)
-            res.status(HttpStatus.OK).send({message: 'Servidor registrasdo con éxito' })
-        } catch (error) {
-            throw error
-        }
+  @Post('register')
+  async register(@Body() body: RequestSaveServerDto, @Res() res: Response) {
+    try {
+      await this.ragnarokServerService.saveServer(body);
+      res
+        .status(HttpStatus.OK)
+        .send({ message: 'Servidor registrasdo con éxito' });
+    } catch (error) {
+      throw error;
     }
-
-    update(@Body() body: any, @Res() res: Response){
-        try {
-            
-        } catch (error) {
-            throw error
-        }
-    }
-
+  }
 }

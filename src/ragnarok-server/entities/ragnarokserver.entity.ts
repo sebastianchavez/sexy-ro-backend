@@ -1,13 +1,13 @@
-import { PrimaryGeneratedColumn, Column, CreateDateColumn, Entity, UpdateDateColumn } from "typeorm";
+import { PrimaryGeneratedColumn, Column, Entity } from 'typeorm';
 
 @Entity('server')
 export class RagnarokServer {
-    @PrimaryGeneratedColumn('increment')
-    idServer: number;
+  @PrimaryGeneratedColumn('increment')
+  idServer: number;
 
-    @Column()
-    name: string;
-    
-    @Column()
-    description: string;
+  @Column()
+  name: string;
+
+  @Column()
+  description: string;
 }
