@@ -9,6 +9,7 @@ import { CpanelService } from './common/services/cpanel/cpanel.service';
 import { HttpModule } from '@nestjs/axios';
 import { TokenService } from './common/services/token/token.service';
 import { AdminModule } from './admin/admin.module';
+import { EventModule } from './event/event.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { AdminModule } from './admin/admin.module';
     RagnarokServerModule,
     HttpModule,
     AdminModule,
+    EventModule,
   ],
   controllers: [AppController],
   providers: [AppService, CpanelService, TokenService],

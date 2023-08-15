@@ -49,4 +49,14 @@ export class CpanelService {
       throw error;
     }
   }
+
+  async getChars(query: string){
+    try {
+      const url = `${this.urlCpanel}api/char/get-chars${query}`;
+      const response = await firstValueFrom(this.http.get(url));
+      return response.data;
+    } catch (error) {
+      throw error
+    }
+  }
 }

@@ -13,4 +13,5 @@ export enum Message {
   MIN_LENGTH_DTO = '{{value}} debe tener un largo mínimo de {{length}}',
   IS_NUMBER_DTO = '{{value}} debe ser un campo numérico',
   INVALID_ADMIN = 'Admin inválido',
+  EVENT_NOT_EXISTS = 'Eventento no existe'
 }
