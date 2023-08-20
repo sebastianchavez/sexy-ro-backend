@@ -11,7 +11,7 @@ export class Admin {
   @PrimaryGeneratedColumn('increment')
   idAdmin: number;
 
-  @Column()
+  @Column({unique: true})
   email: string;
 
   @Column()

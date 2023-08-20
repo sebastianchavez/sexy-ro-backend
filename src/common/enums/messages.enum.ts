@@ -4,6 +4,7 @@ export enum Message {
   DISABLED_USER = 'Usuario deshabilitado',
   INVALID_USER = 'Usuario inválido',
   DUPLICATE_EMAIL = 'Ya existe un jugador con este email',
+  DUPLICATE_EMAIL_ADMIN = 'Ya existe un administrador con este email',
   DUPLICATE_EMAIL_USER = 'Ya existe un jugador con este email o usuario',
   DUPLICATE_USER = 'Ya existe un jugador con este usuario',
   INVALID_SERVER = 'Servidor inválido',

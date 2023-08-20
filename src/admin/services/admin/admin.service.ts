@@ -16,13 +16,24 @@ export class AdminService {
     private tokenService: TokenService,
   ) {}
 
-  register(request: RequestRegisterAdminDto) {
-    const { email, password } = request;
-    const admin = new Admin();
-    admin.email = email;
-    admin.password = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-    admin.isAvailable = true;
-    return this.adminRepository.insert(admin);
+  async register(request: RequestRegisterAdminDto) {
+    try {
+      const { email, password } = request;
+      const admin = new Admin();
+      admin.email = email;
+      admin.password = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+      admin.isAvailable = true;
+      return await this.adminRepository.insert(admin);
+    } catch (error) {
+      if (error.code == 'ER_DUP_ENTRY') {
+        throw new HttpException(
+          Message.DUPLICATE_EMAIL_ADMIN,
+          HttpStatus.BAD_REQUEST,
+        );
+      } else { 
+        throw error
+      }
+    }
   }
 
   async login(request: RequestLoginAdminDto) {
@@ -53,6 +64,15 @@ export class AdminService {
       }
     } else {
       throw new HttpException(Message.INVALID_ADMIN, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  async getAdmins(){
+    try {
+      const admins = await this.adminRepository.find()
+      return admins
+    } catch (error) {
+      throw error
     }
   }
 }
