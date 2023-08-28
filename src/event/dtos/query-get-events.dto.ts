@@ -16,4 +16,8 @@ export class QueryGetEventsDto {
     @IsString()
     @IsOptional()
     readonly type: string;
+
+    @IsNumber()
+    @IsNotEmpty()
+    readonly idServer: number
 }

@@ -17,28 +17,37 @@ export class EventService {
 
     async getEvents(query: QueryGetEventsDto){
         try {
-            const { limit, page, title, type } = query
+            const { limit, page, title, type, idServer } = query
             const where = {
-                title: Like(`%${title}%`),
-                type: Like(`%${type}%`)
+                title: Like(`%${title || ''}%`),
+                type: Like(`%${type || ''}%`),
+                idServer
             }
-            const events = await this.eventRepository.find({
-                select: {
-                    createdAt: true,
-                    days: true,
-                    description: true,
-                    title: true,
-                    endHour: true,
-                    idEvent: true,
-                    startHour: true,
-                    type: true
-                },
-                where,
-                take: limit,
-                skip: (limit * page - limit)
-            })
-    
-            const totalRegister = await this.eventRepository.count({ where })
+            const select = {
+                createdAt: true,
+                days: true,
+                description: true,
+                title: true,
+                endHour: true,
+                idEvent: true,
+                startHour: true,
+                type: true
+            }
+            
+            let events: Event[];
+            let totalRegister = 0
+            if(limit == 0){
+                events = await this.eventRepository.find({ select })
+            } else {
+                events = await this.eventRepository.find({
+                    select,
+                    where,
+                    take: limit,
+                    skip: (limit * page - limit)
+                })
+        
+                totalRegister = await this.eventRepository.count({ where })
+            }
             return {
                 events,
                 totalRegister,

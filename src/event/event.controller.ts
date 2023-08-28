@@ -12,5 +12,14 @@ export class EventController {
         private eventService: EventService
     ){}
 
+    @Get('get-events')
+    async getEvents(@Query() query: QueryGetEventsDto, @Res() res: Response){
+        try {
+            const response = await this.eventService.getEvents(query)
+            res.status(HttpStatus.OK).send(response)
+        } catch (error) {
+            throw error
+        }
+    }
     
 }
