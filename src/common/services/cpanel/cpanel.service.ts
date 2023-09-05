@@ -1,6 +1,6 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, lastValueFrom } from 'rxjs';
 import { IRequestRegisterLogin } from '../../interfaces/request-register-login.interface';
 import { IRequestUpdateLogin } from 'src/common/interfaces/request-update-login.interface';
 
@@ -54,6 +54,16 @@ export class CpanelService {
     try {
       const url = `${this.urlCpanel}api/char/get-chars${query}`;
       const response = await firstValueFrom(this.http.get(url));
+      return response.data;
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async getPvpRanking(){
+    try {
+      const url = `${this.urlCpanel}api/pvp-ranking/get-ranking`;
+      const response = await lastValueFrom(this.http.get(url));
       return response.data;
     } catch (error) {
       throw error

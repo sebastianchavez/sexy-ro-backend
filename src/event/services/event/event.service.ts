@@ -37,7 +37,7 @@ export class EventService {
             let events: Event[];
             let totalRegister = 0
             if(limit == 0){
-                events = await this.eventRepository.find({ select })
+                events = await this.eventRepository.find({ select, where: { idServer  }})
             } else {
                 events = await this.eventRepository.find({
                     select,
@@ -59,7 +59,7 @@ export class EventService {
     }
 
     saveEvent(request: RequestSaveEventDto){
-        const { days, description, endHour, startHour, title, type } = request
+        const { days, description, endHour, startHour, title, type, idServer } = request
         const event = new Event()
         event.days = days
         event.description = description
@@ -67,12 +67,13 @@ export class EventService {
         event.startHour = startHour
         event.title = title
         event.type = type
+        event.idServer = idServer
         return this.eventRepository.insert(event)
     }
 
     async updateEvent(request: RequestUpdateEventDto){
          try {
-            const { days, description, endHour, idEvent, startHour, title, type } = request
+            const { days, description, endHour, idEvent, startHour, title, type, idServer } = request
             const event = await this.eventRepository.findOneBy({idEvent})
             if(event){
                 event.title = title
@@ -81,6 +82,7 @@ export class EventService {
                 event.days = days
                 event.startHour = startHour
                 event.endHour = endHour
+                event.idServer = idServer
                 return this.eventRepository.save(event)
             } else {
                 throw new HttpException(Message.EVENT_NOT_EXISTS, HttpStatus.BAD_REQUEST)

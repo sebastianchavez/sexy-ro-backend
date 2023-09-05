@@ -24,4 +24,8 @@ export class RequestSaveEventDto {
     @IsNumber()
     @IsNotEmpty()
     readonly endHour: number;
+
+    @IsNumber()
+    @IsNotEmpty()
+    readonly idServer: number
 }

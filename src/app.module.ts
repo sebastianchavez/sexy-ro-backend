@@ -10,6 +10,7 @@ import { HttpModule } from '@nestjs/axios';
 import { TokenService } from './common/services/token/token.service';
 import { AdminModule } from './admin/admin.module';
 import { EventModule } from './event/event.module';
+import { PvpRankingModule } from './pvp-ranking/pvp-ranking.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { EventModule } from './event/event.module';
     HttpModule,
     AdminModule,
     EventModule,
+    PvpRankingModule,
   ],
   controllers: [AppController],
   providers: [AppService, CpanelService, TokenService],
